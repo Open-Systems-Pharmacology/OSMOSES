@@ -5,4 +5,4 @@ Tasks:
 
 A PK-Sim simulation transferred to MoBi will result in following structure:
 
-[/Figures/PKSim_to_MoBi.png]
+[[https://github.com/Open-Systems-Pharmacology/OSMOSES/blob/master/Documentation/Figures/PKSim_to_MoBi.png]]

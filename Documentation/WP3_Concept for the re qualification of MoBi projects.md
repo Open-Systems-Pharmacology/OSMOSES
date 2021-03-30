@@ -2,7 +2,7 @@ A concept of the implementation of the re-qualification of PB-QSP MoBi-projects 
 
 The goal of the re-qualification framework is to compare simulation results produced with models build on different versions of PK-Sim platforms.
 
-The structure of a PB-QSP MoBi-project that can be re-quialified is described in [WP2: Modularization concept](https://github.com/msevestre/OSP-OSMOSES/wiki/WP2:-Modularization-concept). In brief, the project consists of:
+The structure of a PB-QSP MoBi-project that can be re-quialified is described in [WP2: Modularization concept](./WP2-Modularization-concept). In brief, the project consists of:
 
 - A set of **PK-Sim modules**, being a PBPK model imported from PK-Sim.
 - **Individuals**, being sets of parameter values describing the physiology of an individual.

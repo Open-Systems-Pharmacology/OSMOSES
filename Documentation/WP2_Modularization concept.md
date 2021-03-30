@@ -76,8 +76,8 @@ The user can create entries either by typing the full path or by selecting them 
 - For molecules, molecules as such can be added to the list.
 - For reactions, the reactions can be added to the list.
 - For passive transports, either single PT, or
--- _Conditions_ of certain transports, e.g., `"DrugAbsorption_para|SOURCE|Lumen"`, `"DrugAbsorption_para|TARGET|Mucosa"`, `"DrugAbsorption_para|INCLUDE|Glucose"`, `"DrugAbsorption_para|EXCLUDE|Insulin"`. If these entries are added to the "Remove"-list, the respective conditions will be removed from the existing transports.
--- Similarly, for PT we could introduce the "Add"-list to add conditions
+    - _Conditions_ of certain transports, e.g., `"DrugAbsorption_para|SOURCE|Lumen"`, `"DrugAbsorption_para|TARGET|Mucosa"`, `"DrugAbsorption_para|INCLUDE|Glucose"`, `"DrugAbsorption_para|EXCLUDE|Insulin"`. If these entries are added to the "Remove"-list, the respective conditions will be removed from the existing transports.
+    - Similarly, for PT we could introduce the "Add"-list to add conditions
 - For observers, the observerst themselves and the conditions similarly as for the PT
 - For Events, full path to the container that should be removed.
 - No "Delete" for IC and PV
@@ -149,7 +149,7 @@ Non-floating molecules are therefore not part of the IC-BB of any module.
 The exact structure is to be discussed.
 
 ## PK-Sim model to MoBi Project
-[Export Model to MoBi](https://github.com/Open-Systems-Pharmacology/OSMOSES/wiki/WP2.1x:-Export-Model-to-MobI)
+[Export Model to MoBi](../WP2.1x_Export-PKSim-to-MoBi.md)
 
 ## Populations
 Models can be exported to PK-Sim for population simulations.

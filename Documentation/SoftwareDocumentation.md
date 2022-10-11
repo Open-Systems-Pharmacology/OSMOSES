@@ -15,6 +15,9 @@
 - Code comments - what and how to comment the code
 - Data binding (concept)
 - Serialization
+- Commands
+- (Code) entry points for typical workflows in the software (e.g., creating an individual in PK-Sim... Where to put the breakpoint to start debugging?)
+- Naming standards?
 
 ### Where to document
 - Use markdown

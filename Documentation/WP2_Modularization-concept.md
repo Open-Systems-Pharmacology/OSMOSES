@@ -73,6 +73,7 @@ An extension module does not only allow to _extend_ or _overwrite_ the entities 
 The user can create entries either by typing the full path or by selecting them from a tree.
 
 - For SS BB, containers or neighborhoods can be added to the list.
+    - Tags? E.g. "Organism|Liver|TAGS|LiverTag"
 - For molecules, molecules as such can be added to the list.
 - For reactions, the reactions can be added to the list.
 - For passive transports, either single PT, or

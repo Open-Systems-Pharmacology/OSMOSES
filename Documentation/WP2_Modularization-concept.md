@@ -150,7 +150,7 @@ Non-floating molecules are therefore not part of the IC-BB of any module.
 The exact structure is to be discussed.
 
 ## PK-Sim model to MoBi Project
-[Export Model to MoBi](../WP2.1x_Export-PKSim-to-MoBi.md)
+[Export Model to MoBi](WP2.1x_Export-PKSim-to-MoBi.md)
 
 ## Populations
 Models can be exported to PK-Sim for population simulations.

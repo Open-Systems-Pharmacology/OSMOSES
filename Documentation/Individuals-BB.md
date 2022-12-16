@@ -1,3 +1,14 @@
+A new BB-type **Individuals** will be introduced. This BB is not part of a module but will be shared within the project. The entries of this BB contain spatial structure parameter sets describing individual physiology.
+
+In addition to parameter values, each Individual-entry stores the information needed to re-create the specific individual. The information is:
+- Species
+- Population
+- Gender
+- Age
+- Weight
+- Height
+- User-defined Anatomy & Physiology (as in the corresponding PK-Sim tab).
+
 ## Individuals in MoBi
 - An Individual is a list of parameter paths and values that define the physiology of an individual. First version - only constant paramters (no derived params)
 - For future: also include formula parameters and re-think the presentation of this BB
@@ -15,6 +26,7 @@
 
 ### Create a new Individual
 - Access to PK-Sim UI
+- To allow **aging**, this property must be selected upon creation of the individual in PK-Sim. In this case, the corresponding parameters well be represented by table formulas.
 
 ### Use-cases and solutions
 - Add a new compartment to the SS

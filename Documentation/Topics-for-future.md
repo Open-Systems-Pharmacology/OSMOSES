@@ -49,3 +49,6 @@ Commit to module will replace commit to BB. Only commiting changed values of par
 ## Recreation of PK-Sim modules from snapshot
 
 ## Re-design of applications and events in MoBi
+
+## Individuals
+- Allow aging. To allow **aging**, this property must be selected upon creation of the individual in PK-Sim. In this case, the corresponding parameters well be represented by table formulas.

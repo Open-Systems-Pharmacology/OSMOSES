@@ -85,7 +85,7 @@ Reactions are always overwritten by name. Therefore, if a reaction is defined in
 
 ### Passive transports
 
-When combining passive transports, their "Kinetic" and "Parameters" properties are always overwritten by transport name. Source, target, and Include/Exclude lists for molecules are always combined. (to be extended https://github.com/Open-Systems-Pharmacology/OSMOSES/issues/61)
+When combining passive transports, their "Kinetic" and "Parameters" properties are always overwritten by transport name. Source, target, and Include/Exclude lists for molecules are always combined. (to be extended 2DO https://github.com/Open-Systems-Pharmacology/OSMOSES/issues/61)
 
 ### Observer
 
@@ -93,4 +93,4 @@ Observer are always overwritten by name. The "In container with" and "Include/Ex
 
 ### Events
 
-Events are always overwritten by name.
+Events are always overwritten by name. 2DO https://github.com/Open-Systems-Pharmacology/OSMOSES/issues/62

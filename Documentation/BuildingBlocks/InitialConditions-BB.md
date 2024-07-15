@@ -1,3 +1,12 @@
+## Initial Conditions (IC)
+The Initial Conditions (IC) BB defines the containers in which the molecules will be present and their initial amounts.
+
+By default, an IC BB does not contain any enries. When a simulation is created from modules, a "Molecule A" will only be created in a "Container B" if there is at least one IC BB with the entry for "Molecule A" in "Container B". To add new entries to the IC BB, use the "Exdend" button located in the "Edit Initial Conditions" ribbon bar. A dialog window opens allowing to select the molecules for which the entries should be created (molecules from different modules can be selected) and a spatial structure. Entries will be created for each selected molecule in each physical container of the selected spatial structure. To add entries for the containers in different modules, the extension step must be repeated for each module.
+
+The entries in an IC BB are not restricted to the molecules and/or containers in the module where the IC BB is located. An IC BB can overwrite or extend the initial conditions for all combinations of molecules and containers in the whole project.
+
+Each module can contain none or multiple IC BBs. During simulation creation, only one IC BB from each module can be selected.
+
 ## Initial Conditions (IC) Building Block (BB)
 - An IC BB is an $n \times m$ matrix with $n$ the number of molecules and $m$ the number of containers, consisting of molecule names, container paths, start values, Scale Divisors, and the "is present" and "negative values allowed" properties
 - Values can be edited by user, new entries can be added or existing entries removed
@@ -31,3 +40,4 @@
 - Load from pkml
 
 ### Notes
+

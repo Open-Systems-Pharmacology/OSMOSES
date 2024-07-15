@@ -1,3 +1,5 @@
+# OSMOSES modularization concept
+
 The following document specifies the new concept of organizing modeling projects in modules to achieve better flexibility and re-usability in MoBi.
 
 The new concept introduces changes to the way how model structures are organized and combined to simulations. The current implementation of the software (OSPS V11.3) has two major layers of organization of a MoBi project – **Building Blocks** (BB) that are combined to **Simulations**. The new modularization concept extends the structure to **Modules**, **Building Blocks**, and **Simulations**.
@@ -13,10 +15,10 @@ The new concept introduces changes to the way how model structures are organized
 - **Model**: An combination of modules.
 - **Simulation**: Combination of the **model** and the results of a simulation of this model. *Note:* The distinction between a model and a simulation is not obvious in the OSPS, and these terms are interchangable to a greater extent.
 - **MoBi-project**: A MoBi-file (e.g. *.mbp3) containing modules, models, observed data, etc.
-- [**Initial Conditions (IC) BB**](BuildingBlocks/InitialConditions-BB.md): formerly known as Molecular Start Values.
-- [**Parameter Values (PV) BB**](BuildingBlocks/ParameterValues-BB.md): formerly known as Parameter Start Values.
-- **Individual**: Parameter set describing the physiological properties of an individual. The parameter set referred to is limited to the parameters provided by PK-Sim. Technically comparable to the Parameter Values BB with additional meta data. See [**Individuals**](BuildingBlocks/Individuals-BB.md) for details.
-- **Expression profile**: Parameter set describing expression of a protein. See [**Expression Profile**](BuildingBlocks/ExpressionProfile.md) for details.
+- [*Initial Conditions (IC) BB*](BuildingBlocks/InitialConditions-BB.md): formerly known as Molecular Start Values.
+- [*Parameter Values (PV) BB*](BuildingBlocks/ParameterValues-BB.md): formerly known as Parameter Start Values.
+- **Individual**: Parameter set describing the physiological properties of an individual. The parameter set referred to is limited to the parameters provided by PK-Sim. Technically comparable to the Parameter Values BB with additional meta data. See [*Individuals*](BuildingBlocks/Individuals-BB.md) for details.
+- **Expression profile**: Parameter set describing expression of a protein. See [*Expression Profile*](BuildingBlocks/ExpressionProfile.md) for details.
 
 ## Project structure
 A MoBi-project contains a set of:

@@ -13,6 +13,7 @@ The new concept introduces changes to how model structures are organized and com
 
 - **PK-Sim snapshot**: part of the PK-Sim module allowing the re-creation of the PK-Sim module.
 - **Model**: A combination of modules.
+- **Model structure**: Structural definition of the model, including the containers, connections, species, and active and passive processes, but excluding the parametrization and initial conditions of the final simulation.
 - **Simulation**: Combination of the **model** and the results of a simulation of this model. *Note:* The distinction between a model and a simulation is not obvious in the OSPS, and these terms are interchangeable to a greater extent.
 - **MoBi-project**: A MoBi-file (e.g. *.mbp3) containing modules, models, observed data, etc.
 - [*Initial Conditions (IC) BB*](BuildingBlocks/InitialConditions-BB.md): formerly known as Molecule Start Values.
@@ -68,14 +69,18 @@ During simulation creation, the modules are combined to a common model structure
 For combining the spatial structures BB, two modes exist. A module can *extend* or *overwrite* the structure created in the previous steps.
 
 ### Merge behavior "Overwrite"
-When combining modules "A" and "B" (with the hierarchy "A" -> "B"), all containers from module "B" will overwrite the containers with the same path in module "A". I.e., if module "A" has a container "Container A" with two sub-containers "Container A" and "Container B", and module "B" has a container "B" without any sun-containers, the final model will contain "Container A" without the sub-containers "Container B" and "Container C". "Container A" will only have parameters that are defined in module "B", but not in module "B.
+When combining modules "A" and "B" (with the hierarchy "A" -> "B"), all containers from module "B" will overwrite the containers with the same path in module "A". I.e., if module "A" has a container "Organism|Container A" with two sub-containers "Container B" and "Container C" (absolute paths: "Organism|Container A|Container B" and "Organism|Container A|Container C"), and module "B" has a container "Organism|Container A" without any sub-containers, the final model will contain "Organism|Container A" without the sub-containers "Container B" and "Container C". "Container A" will only have parameters that are defined in module "B", but not in module "A".
 
 ### Merge behavior "Extend"
-When combining modules "A" and "B" (with the hierarchy "B" -> "A"), all containers and parameters from module "A" will be added to module "B". I.e., if module "A" has a container "Container A" with two sub-containers "Container A" and "Container B", and module "B" has a container "B" without any sun-containers, the final model will contain "Container A" with parameters defined in both modules, "A" and "B", and with the sub-containers "Container B" and "Container C".
+When combining modules "A" and "B" (with the hierarchy "A" -> "B"), all containers and parameters from module "B" will be added to module "A". I.e., if module "A" has a container "Organism|Container A" with two sub-containers "Container B" and "Container C" (absolute paths: "Organism|Container A|Container B" and "Organism|Container A|Container C"), and module "B" has a container "Organism|Container A" without any sub-containers, the final model will contain "Organism|Container A" with parameters defined in both modules, and with the sub-containers "Container B" and "Container C".
+
+- Parameters will be overwritten. If both modules have a parameter "Organism|Container A|Param", the parameter from module "B" will be used
+- Tags will be extended. If "Organism|Container A" has a tag "Tag A" in module "A" and a tag "Tag B" in module "B", in the final model, "Organism|Container A" will have tags "Tag A" and "Tag B".
+- Container types will be overwritten. If "Organism|Container A" is "physical" in module "A" and "logical" in module "B", the container will be "logical" in the final model.
 
 **Containers** are extended or overwritten by their full path. When overwriting, all descendants of a container are removed if not present in the module that overwrites (i.e., replacement of the whole tree structure).
 
-**Tags** of containers or parameters are extended or overwritten, depending on the selected merge behavior (waiting for https://github.com/Open-Systems-Pharmacology/MoBi/issues/1413).
+**Tags** of containers or parameters are extended or overwritten, depending on the selected merge behavior.
 
 **Neighborhoods** are extended (e.g., addition of new parameters) or overwritten by the neighborhood name.
 

@@ -62,17 +62,17 @@ For each module that contains at least one IC or PV BB, the user can select one 
 
 ## Combination rules
 
-During simulation creation, the modules are combined to a common model structure. Entities are combined (extended or overwritten) by their absoulte path (for containers in the spatial structure, parameters, and molecule values) or by their names (for neighborhoods, transports, molecules, etc).
+During simulation creation, the modules are combined to a common model structure. Entities are combined (extended or overwritten) by their absoulte path (for containers in the spatial structure, parameters, and molecule values) or by their names (for neighborhoods, transports, molecules, etc). The result is a simulation which represents the combination of the selected modules.
 
 ### Spatial structure
 
 For combining the spatial structures BB, two modes exist. A module can *extend* or *overwrite* the structure created in the previous steps.
 
 ### Merge behavior "Overwrite"
-When combining modules "A" and "B" (with the hierarchy "A" -> "B"), all containers from module "B" will overwrite the containers with the same path in module "A". I.e., if module "A" has a container "Organism|Container A" with two sub-containers "Container B" and "Container C" (absolute paths: "Organism|Container A|Container B" and "Organism|Container A|Container C"), and module "B" has a container "Organism|Container A" without any sub-containers, the final model will contain "Organism|Container A" without the sub-containers "Container B" and "Container C". "Container A" will only have parameters that are defined in module "B", but not in module "A".
+When combining modules "A" and "B" (with the hierarchy "A" -> "B"), all containers from module "B" will overwrite the containers with the same path in module "A". I.e., if module "A" has a container "Organism|Container 1" with two sub-containers "Container 2" and "Container 3" (absolute paths: "Organism|Container 1|Container 2" and "Organism|Container 1|Container 2"), and module "B" has a container "Organism|Container 1" without any sub-containers, the final model will contain "Organism|Container 1" without the sub-containers "Container 2" and "Container 3". "Organism|Container 1" will only have parameters that are defined in module "B", but not in module "A".
 
 ### Merge behavior "Extend"
-When combining modules "A" and "B" (with the hierarchy "A" -> "B"), all containers and parameters from module "B" will be added to module "A". I.e., if module "A" has a container "Organism|Container A" with two sub-containers "Container B" and "Container C" (absolute paths: "Organism|Container A|Container B" and "Organism|Container A|Container C"), and module "B" has a container "Organism|Container A" without any sub-containers, the final model will contain "Organism|Container A" with parameters defined in both modules, and with the sub-containers "Container B" and "Container C".
+When combining modules "A" and "B" (with the hierarchy "A" -> "B"), all containers and parameters from module "B" will be added to module "A". I.e., if module "A" has a container "Organism|Container 1" with two sub-containers "Container 2" and "Container 3" (absolute paths: "Organism|Container 1|Container 2" and "Organism|Container 1|Container 3"), and module "B" has a container "Organism|Container 1" without any sub-containers, the final model will contain "Organism|Container 1" with parameters defined in both modules, and with the sub-containers "Organism|Container 1|Container 2" and "Organism|Container 1|Container 3".
 
 - Parameters will be overwritten. If both modules have a parameter "Organism|Container A|Param", the parameter from module "B" will be used
 - Tags will be extended. If "Organism|Container A" has a tag "Tag A" in module "A" and a tag "Tag B" in module "B", in the final model, "Organism|Container A" will have tags "Tag A" and "Tag B".

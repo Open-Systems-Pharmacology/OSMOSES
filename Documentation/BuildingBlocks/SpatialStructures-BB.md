@@ -19,3 +19,13 @@ If an extension module defines a neighborhood with a neighbor that is not presen
 ### Parameters
 
  Parameters that are defined in the Individuals-BB be populated with "NaN"-values in the SS-BB of PK-Sim modules. **2DO** https://github.com/Open-Systems-Pharmacology/MoBi/issues/1401
+
+ ### Export of containers to pkml
+
+ As described in ["Modularization concept"](../Modularization-concept.md), individual specific parameters in PK-Sim modules are not stored directly in the spatial structure but in the Individual BB. When saving a container from a PK-Sim module to pkml, the user must select an Individual and, if applicable, the proteins for which the expression in this container should be allocated.
+
+ When exporting the container, all neighborhoods associated to this container are also exported.
+
+ ### Renaming containers
+
+ When renaming a container, the software suggests to change the neighbor of all neighborhoods assiciated with the container to the new name.

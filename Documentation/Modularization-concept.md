@@ -1,22 +1,25 @@
+# OSMOSES modularization concept
+
 The following document specifies the new concept of organizing modeling projects in modules to achieve better flexibility and re-usability in MoBi.
 
-The new concept introduces changes to the way how model structures are organized and combined to simulations. The current implementation of the software (OSPS V11.1) has two major layers of organization of a MoBi project – **Building Blocks** (BB) that are combined to **Simulations**. The proposed modularization concept extends the structure to Modules, Building Blocks, Model Configurations, and Simulations.
+The new concept introduces changes to how model structures are organized and combined into simulations. The current implementation of the software (OSPS V11.3) has two major layers of organization of a MoBi project – **Building Blocks** (BB) that are combined into **Simulations**. The new modularization concept extends the structure to **Modules**, **Building Blocks**, and **Simulations**.
 
 ## Definitions:
 - **Entity**: everything within the model structure - molecule, container, parameter, parameter value...
-- **Building Block (BB)**: remains as in current OSPS logic - a summary of specific model parts.
+- **Building Block (BB)**: Specific model parts that, combined together, create a full model structure. See documentation on [building blocks](https://docs.open-systems-pharmacology.org/working-with-mobi/mobi-documentation/building-block-concepts).
 - **Module**: A set of BB
-  - _Extension module_: (xModule) Editable modules that can be combined with PK-Sim modules in a _Model Configuration_.
-  - _PK-Sim module_: A module based on a PK-Sim model. Not editable by default and can be converted into an xModule.
+  - _PK-Sim module_: A module based on a PK-Sim PBPK model. As best practice, a PK-Sim module should not be modified. Instead, all changes/extensions to the model should be done in extension modules. A PK-Sim module is converted into an extension module when edited by the user.
+  - _Extension module_: Editable modules that contain any changes to the model structure made by the user.
 
-- **PK-Sim snapshot**: part of the PK-Sim module allowing the re-creation of the this PK-Sim module.
-- **Model configuration**: combination of modules.
-- **Model**: An instance of a model configuration. Models from the same configuration may differ in their parametrization.
-- **Simulation**: Combination of the **model** and the results of a simulation of this model.
-- **Individual**: Parameter set describing the physiological properties of an individual. The parameter set referred to is limited to the parameters provided by PK-Sim (and, if extension of the SS require, some additional parameters).
-- **MoBi-project**: A MoBi-file (e.g. *.mbp3) containing modules, model configurations, models, observed data, etc.
-- [**Initial Conditions (IC) BB**](BuildingBlocks/InitialConditions-BB.md): formerly known as Molecular Start Values.
-- [**Parameter Values (PV) BB**](BuildingBlocks/ParameterValues-BB.md): formerly known as Parameter Start Values.
+- **PK-Sim snapshot**: part of the PK-Sim module allowing the re-creation of the PK-Sim module.
+- **Model**: A combination of modules.
+- **Model structure**: Structural definition of the model, including the containers, connections, species, and active and passive processes, but excluding the parametrization and initial conditions of the final simulation.
+- **Simulation**: Combination of the **model** and the results of a simulation of this model. *Note:* The distinction between a model and a simulation is not obvious in the OSPS, and these terms are interchangeable to a greater extent.
+- **MoBi-project**: A MoBi-file (e.g. *.mbp3) containing modules, models, observed data, etc.
+- [*Initial Conditions (IC) BB*](BuildingBlocks/InitialConditions-BB.md): formerly known as Molecule Start Values.
+- [*Parameter Values (PV) BB*](BuildingBlocks/ParameterValues-BB.md): formerly known as Parameter Start Values.
+- **Individual**: Parameter set describing the physiological properties of an individual. The parameter set referred to is limited to the parameters provided by PK-Sim. Technically comparable to the Parameter Values BB with additional metadata. See [*Individuals*](BuildingBlocks/Individuals-BB.md) for details.
+- **Expression profile**: Parameter set describing the expression of a protein. See [*Expression Profile*](BuildingBlocks/ExpressionProfile.md) for details.
 
 ## Project structure
 A MoBi-project contains a set of:
@@ -24,131 +27,79 @@ A MoBi-project contains a set of:
 - Extension modules
 - Individual BBs
 - Expression Profile BBs
-- Model Configurations, which are combinations of (0-n) PK-Sim modules, (0-n) extension modules, (0-1) individual BB, and (0-n) expression profiles.
-- Models resp. simulations, which are instances of model configurations.
-
-![User interface of a MoBi project - expression profiles missing!](Figures/ProjectUI_Mockup.png)
+- Models resp. Simulations, which are combinations of (0-n) PK-Sim modules, (0-n) extension modules, (0-1) individual BB, and (0-n) expression profiles. At least one module (PK-Sim or extension) must be selected to create a simulation.
 
 ## Modules
-Every module consists of **building blocks (BB)**, with BB types *Spatial Structures (SS)* (1), *Molecules* (1), *Reactions* (1), *Passive Transports (PT)* (1), *Observers* (1), *Events* (1), *Parameter Values (PV)* (1-n), and *Initial conditions (IC)* (1-n). Every module inlcudes exactly one BB of each type. Empty BBs are allowed.
+Every module consists of **building blocks (BB)**, with BB types [*Spatial Structures (SS)*](BuildingBlocks/SpatialStructures-BB.md) (0-1), *Molecules* (0-1), *Reactions* (0-1), [*Passive Transports (PT)*](BuildingBlocks/PassiveTransports-BB.md) (0-1), *Observers* (0-1), *Events* (0-1), [*Parameter Values (PV)*](BuildingBlocks/ParameterValues-BB.md) (1-n), and [*Initial conditions (IC)*](BuildingBlocks/InitialConditions-BB.md) (1-n). Every module includes no or exactly one BB of each type, except for PV and IC BBs, of which multiple can be present in one module.
 
-| Module BBs         | Comments                   |
-| ------------------ | -------------------------- |
-| Spatial Structure  | As it was before           |
-| Molecules          | As it was before           |
-| Reactions          | As it was before           |
-| Passive Transports | As it was before           |
-| Observers          | As it was before           |
-| Events             | As it was before           |
-| PV                 | defined above              |
-| IC                 | defined above              |
-
-## PK-Sim modules
-A project in MoBi can be based on a PBPK model exported from PK-Sim. This model is present as a **PK-Sim module** and contains *all of the BB types*. PK-Sim modules cannot be edited by default. If the user decides to edit a PK-Sim module, the PK-Sim module will be converted to an extension module. A project can contain multiple or no PK-Sim modules. Every PK-Sim module will contain the *snapshot* of the PK-Sim model that will allow recreating of the model in PK-Sim.
-
-It is possible to save the snapshot associated with a PK-Sim module (e.g. right-click "Save PK-Sim snapshot") so the model can be recreated in PK-Sim.
+### PK-Sim modules
+A project in MoBi can be based on a PBPK model exported from PK-Sim. This model is present as a **PK-Sim module** and contains *all of the BB types*. PK-Sim modules cannot be edited by default. If the user decides to edit a PK-Sim module, the PK-Sim module will be converted to an extension module. A project can contain multiple or no PK-Sim modules.
 
 Export of a PK-Sim model to MoBi creates one PK-Sim module, one individual, and (0-n) expression profile BBs.
 
-When converting a PK-Sim module into an extension module (i.e., making the PK-Sim module editable), the user has to select an Individual based on which the missing values will be filled out.
+Compared to the previous versions, v12 introduces some changes in how and where individual parameters are stored when a PBPK model is imported in MoBi. To avoid duplication of information, the PV BB only holds values for parameters that are different from those stored in other BBs. In most cases, the PV BB will be empty when a PK-Sim model is imported into MoBi. An exception is when the user has modified parameter values in the PK-Sim simulation (e.g., intestinal permeability of Midazolam in the [Midazolam PBPK model](https://github.com/Open-Systems-Pharmacology/OSP-PBPK-Model-Library/tree/master/Midazolam).) In this case, the user-defined parameters are stored in the PV BB.
 
-When viewing a SS BB of a PK-Sim module, one of the existing Individuals can be selected fron the drop-down list.
+- All parameters of the spatial structure that have the **same value or the same formula in all species and individuals** are stored directly in the spatial structures BB with the fixed value or an explicit formula. Example: `Organism|Thickness (endothelium)` (constant value) or `Organism|Weight of blood organs` (sum formula).
 
-## Extension modules
-Each MoBi project contains any number of **Extension modules**.
+- Parameters that are present in **all species** but have different species-specific values are located in the SS BB, but their value is set to `NaN`. Example: `Organism|Acidic phospholipids (blood cells) [mg/g] - RR`, which has a value of 0.57 for humans and 0.5 for rats. The actual value is stored in the *Individual* BB. When creating a simulation and selecting a PK-Sim module, the user must select an individual. The value from the individual BB will then be applied to the parameter and replace the `NaN` stored in the SS BB.
 
-Each module containing molecules automatically contains default IC entries for these molecules in the PK-Sim module(s) or the combination of all PK-Sim modules with the SS BB within the module.
+- Parameters that are present only for certain species (e.g., `Organism|Lumen|Duodenum|Thickness_p1` is only present in the human species, but not in rat, `Organism|Lumen|Duodenum|Default thickness of gut wall` is present in the rat but not in human), **or** have a distribution in a species population (e.g., `Orgnanism|Fat|Volume`) are **not** located in the spatial structures BB, but only in the individual. Such parameters are added to the simulation structure during the simulation creation step. *Note:* Only parameters defined in the Individual BB are added to the model structure, but not the parameters defined in the PV BB.
 
-*Creation* of new modules can be performed from scratch ("Create new module" creates a module with empty BBs) or by copying whole modules ("Clone module") or parts of the modules (e.g., multi-select SS and reactions BB and select "Create new module from..."). It is furthermore possible to save modules (as pkml), or save BB and load them in modules.
+2OD: https://github.com/Open-Systems-Pharmacology/MoBi/issues/1401
 
-An extension module can have multiple PV and IC BBs. If an xModule has mutliple IC BBs, they all have the same entries, only the values differ. This implies that extending one of the ICs also extends the others. Q: _Also synchronize the "isPresent" and "negative values allowed" properties?_
+### Extension modules
+Each MoBi project may contain any number of **Extension modules**. An extension module can add or modify any part of the default PK-Sim structure - spatial structures, molecules, reactions, etc.
 
-## Deletion of entities
-An extension module does not only allow to _extend_ or _overwrite_ the entities of modules it is combined with (e.g., PK-Sim modules), but also to _delete_ certain parts present in other modules. This functionality will be implemented with **Deletion-Lists** as part of the BBs within the extension modules. A deletion-list holds full paths to the entities that will be deleted from the model structure. Every deletion is recursive, i.e., all children of an entity specified in the deletion-list will also be removed from the final structure.
+When adding new compartments (e.g., adding a new organ) or molecules in an extension module, it is important to keep in mind that molecules will only be created in compartments if entries for the molecule-container combination is present in *any* IC BB. Therefore, when adding a molecule or a container in an extension module, the IC BB should be extended accordingly.
 
-The user can create entries either by typing the full path or by selecting them from a tree.
-
-- For SS BB, containers or neighborhoods can be added to the list.
-    - Tags? E.g. "Organism|Liver|TAGS|LiverTag"
-- For molecules, molecules as such can be added to the list.
-- For reactions, the reactions can be added to the list.
-- For passive transports, either single PT, or
-    - _Conditions_ of certain transports, e.g., `"DrugAbsorption_para|SOURCE|Lumen"`, `"DrugAbsorption_para|TARGET|Mucosa"`, `"DrugAbsorption_para|INCLUDE|Glucose"`, `"DrugAbsorption_para|EXCLUDE|Insulin"`. If these entries are added to the "Remove"-list, the respective conditions will be removed from the existing transports.
-    - Similarly, for PT we could introduce the "Add"-list to add conditions
-- For observers, the observerst themselves and the conditions similarly as for the PT
-- For Events, full path to the container that should be removed.
-- No "Delete" for IC and PV
-- No "Delete" for the "Individuals"- and "Expression Profiles"-BB.
-
-In case an entry defined in the "Delete"-list is not found, the model configuration should be created and a warning generated.
+*Creation* of new modules can be performed from scratch ("Create new module" creates a module with empty BBs) or by cloning whole modules ("Clone module"). Modules can be saved as pkml, and BBs in a module can be loaded from pkml.
 
 ## Model configuration
 
-Specific combination of modules is called **model configuration**. Upon building the model configuration, the extension modules will *extend* or *overwrite* the selected PK-Sim modules. The user is allowed to select multiple PK-Sim modules, or PK-Sim modules in combination with extension modules, or only the extension module(s). The number of modules selected is not limited. The selection of PK-Sim and extension modules results in an *hierarchy* of the modules within the build configuration. If multiple PK-Sim modules are selected, they all must be of the same version (11.1, 12, etc...) and structure (small molecules or large molecules). If the version or the structure differs, the user cannot create the model configuration.
+Specific combination of modules is called **model configuration**. Upon building the model configuration, the extension modules will *extend* or *overwrite* the selected PK-Sim modules. The user can select multiple PK-Sim modules, or PK-Sim modules in combination with extension modules, or only the extension module(s).  The selection of modules results in a *hierarchy* of the modules, where the order of module selection determines the order of overwrite/extend actions. E.g., multiple PK-Sim modules are always extended to a common PK-Sim module, selected extension module 1 extends/overwrites the common PK-Sim module, selected extension module 2 overwrites/extends the combination of the common PK-Sim module and module 1, and so on.
 
-![Model configuration creation dialog](Figures/ModelConfiguration_Mockup.png)
+If a model configuration contains a PK-Sim module, the user must select an Individual and Expression Profiles (optionally). In the hierarchy of the selected modules, the Individuals-BB always comes before the extension modules (i.e., the parameters are applied to the standard PK-Sim module). **PLEASE ADD MORE CONCRETE INFORMATION ON WHEN THE INDIVIDUAL BB IS APPLIED**
 
-Multple PK-Sim modules are always extended to a common PK-Sim module. Selected extension module 1 extends/overwrites the common PK-Sim module, selected extension module 2 overwrites/extends the combination of the common PK-Sim module and module 1, and so on. Internally, the software will create new BBs from the combination of the modules and create the models applying the current logic.
-
-If a model configuration contains a PK-Sim module, the user must select an Individual (pre-select the first one?) and Expression Profiles (optionally). Individual and Expression Profiles can be selected without a PK-Sim module. In the hierarchy of the selected modules, the Individuals-BB always comes before the extension modules (i.e., the parameters are applied to the standard PK-Sim module). When an extension module is selected, the user must additionally select an IC and PV BB of that module.
-
-![Structure of a model configuration](Figures/ModelConfiguration_Scheme.png)
-
-The model configuration will potentially contain IC values that are not defined in the modules (e.g., a combination of a module with new molecules with a module with a new organ). These values are populated with default values (initial condition e.g. 0). The newly created BBs can be exported and re-imported as new modules, resulting in modules containg the intial conditions for these non-standard combinations.
-
-Model configurations can be **configured** and **cloned**.
-
-## Simulation
-Simulations are created from model configurations. A single model configuration can have multiple models. All these models will have the same structure, but may differ in their parameters and/or initial conditions. During creation of a model from the model configuration, the user can select a different Individual and/or Expression Profile.
-
-*Batch actions* such as "run all", "update all" will be available as an option in the context menu of model configuration.
+For each module that contains at least one IC or PV BB, the user can select one (or none) IC and/or PV BB.
 
 ## Combination rules
-Three combination actions are supported:
-- Extend
-- Overwrite
-- Delete
 
-Combinations of BBs will be created by the following logic. Combining module A and module B:
-1. For each entity in module B:
-* If the entity is not present in module A, add the entity to the new combination (extend)
-* If the entity is present in module A:
-    * If the entity is a *quantity* (parameter, molecule initial condition, observer), instance from module B will be applied (overwrite)
-    * If the entitiy is a *container* (organ, compartment), do nothing
-2. Repeat 1. for each module as defined in the hierarchy of the selected modules
-3. Create the final combination of the BBs as a model configuration.
+During simulation creation, the modules are combined to a common model structure. Entities are combined (extended or overwritten) by their absoulte path (for containers in the spatial structure, parameters, and molecule values) or by their names (for neighborhoods, transports, molecules, etc). The result is a simulation which represents the combination of the selected modules.
 
-Deletions are performed according to the hierarchy of the selected modules. I.e., if extension module 1 has an entry "Organism|Kidney" in the "Deletion"-list, and extension module 2 has a container "Organism|Kidney" (extended kidney), the final model configuration **will** have a kidney, because module 2 is applied after module 1.
+### Spatial structure
 
-Deletions will be applied first, i.e., if an xModule has "Organism|Kidney" in the "Deletion"-list and a Kidney organ in the SS BB, the Kidney will be replaced by a new verion.
+For combining the spatial structures BB, two modes exist. A module can *extend* or *overwrite* the structure created in the previous steps.
 
-MUST BE SPECIFIED FOR EACH BB TYPE
+### Merge behavior "Overwrite"
+When combining modules "A" and "B" (with the hierarchy "A" <- "B"), all containers from module "B" will overwrite the containers with the same path in module "A". I.e., if module "A" has a container "Organism|Container 1" with two sub-containers "Container 2" and "Container 3" (absolute paths: "Organism|Container 1|Container 2" and "Organism|Container 1|Container 2"), and module "B" has a container "Organism|Container 1" without any sub-containers, the final model will contain "Organism|Container 1" without the sub-containers "Container 2" and "Container 3". "Organism|Container 1" will only have parameters that are defined in module "B", but not in module "A".
 
-### Use cases
-- Changing a tag of a container
-- Changing conditions of passive transports
-- Replacing a container
-- Adding parameter to a container
-- Changin a value or type of a parameter
-- Adding new compartment to an organ
-- Replacing an organ with a new structure
+### Merge behavior "Extend"
+When combining modules "A" and "B" (with the hierarchy "A" <- "B"), all containers and parameters from module "B" will be added to module "A". I.e., if module "A" has a container "Organism|Container 1" with two sub-containers "Container 2" and "Container 3" (absolute paths: "Organism|Container 1|Container 2" and "Organism|Container 1|Container 3"), and module "B" has a container "Organism|Container 1" without any sub-containers, the final model will contain "Organism|Container 1" with parameters defined in both modules, and with the sub-containers "Organism|Container 1|Container 2" and "Organism|Container 1|Container 3".
 
-## Commit changes
-STILL UNDER DISCUSSION
+- Parameters will be overwritten. If both modules have a parameter "Organism|Container A|Param", the parameter from module "B" will be used
+- Tags will be extended. If "Organism|Container A" has a tag "Tag A" in module "A" and a tag "Tag B" in module "B", in the final model, "Organism|Container A" will have tags "Tag A" and "Tag B".
+- Container types will be overwritten. If "Organism|Container A" is "physical" in module "A" and "logical" in module "B", the container will be "logical" in the final model.
 
-Commit to module will replace commit to BB. Only commiting changed values of parameters will be supported. The changed value will be propagated to the PV of the last module where the respective parameter is present. E.g., if Parameter A is present in Modules 4, 2, and any PK-Sim module (the number corresponds to the hierarchy selected during model configuration creation), the value will be propagated to Module 4. _Alternatively_: Show dialogue to select to which module the changes should be commited to.
+**Containers** are extended or overwritten by their full path. When overwriting, all descendants of a container are removed if not present in the module that overwrites (i.e., replacement of the whole tree structure).
 
-## Administration protocols
-MoBi should provide a wizard similar to that in PK-Sim to allow convenient creation of administration protocolls. ~~Combined with the **Generic modules** as described above, the administration protocolls could be stored as separate modules and applied repeatedly during model configuration creation. Only possible if _Alternative 2_ for generic modules is implemented.~~
+**Tags** of containers or parameters are extended or overwritten, depending on the selected merge behavior.
 
-## Individuals
-See ["Individuals-BB"](BuildingBlocks/Individuals-BB.md).
+**Neighborhoods** are extended (e.g., addition of new parameters) or overwritten by the neighborhood name.
 
-## Protein Expression BB
-See ["Expression Profile-BB"](BuildingBlocks/ExpressionProfile.md).
+**Formulas** are never overwritten. Meaning, if module "B" defines a formula with the same name as a formula in module "A", the updated formula will only be used for the parameters defined in module "B", but not for other parameters that use this formula.
 
-## PK-Sim model to MoBi Project
-[Export Model to MoBi](WP2.1x_Export-PKSim-to-MoBi.md)
+### Reactions
 
-## Populations
-Models can be exported to PK-Sim for population simulations.
+Reactions are always overwritten by name. Therefore, if a reaction is defined in an extension module, it must contain all required parameters. It is not possible to only add some parameters (in merge behavior "Extend"), while retaining parameters from the module that is higher in the hierarchy.
+
+### Passive transports
+
+When combining passive transports, their "Kinetic" and "Parameters" properties are always overwritten by transport name. Source, target, and Include/Exclude lists for molecules are always combined. (to be extended 2DO https://github.com/Open-Systems-Pharmacology/OSMOSES/issues/61)
+
+### Observer
+
+Observers are always overwritten by name. The "In container with" and "Include/Exclude molecules" lists are always combined.
+
+### Events
+
+Events are always overwritten by name. 2DO https://github.com/Open-Systems-Pharmacology/OSMOSES/issues/62

@@ -1,7 +1,7 @@
 ## Spatial Structures (SS) Building Block (BB)
 
 ### Parent path
-The spatial structures (SS) of the models are organized in a hierarchy of containers, where each container can be a *child* of a *parent* container. At the same time, `Container A` can be a *child* of exactly one *parent container* `Container B` and the *parent* of multiple containers. Each container has a property `Parent path` which specifies the **full path** to its parent container.
+The spatial structures (SS) of the models are organized in a hierarchy of containers, where each container can be a *child* of a *parent* container. At the same time, `Container A` can be a *child* of maximal one *parent container* `Container B` and the *parent* of multiple containers. Each container has a property `Parent path` which specifies the **full path** to its parent container.
 
 In a module, the user can change the parent container property for the top level containers. When combining modules, the containers (and all their children) of the module will be placed under the container specified in the `Parent path` property. If the parent path of `Container A` is empty OR the container with the specified parent path is not found in the simulation, `Container A` will be created as the top-level container in the simulation.
 

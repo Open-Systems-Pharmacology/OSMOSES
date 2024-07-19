@@ -9,7 +9,7 @@ The new concept introduces changes to how model structures are organized and com
 - **Building Block (BB)**: Specific model parts that, combined together, create a full model structure. See documentation on [building blocks](https://docs.open-systems-pharmacology.org/working-with-mobi/mobi-documentation/building-block-concepts).
 - **Module**: A set of BB
   - _PK-Sim module_: A module based on a PK-Sim PBPK model. As best practice, a PK-Sim module should not be modified. Instead, all changes/extensions to the model should be done in extension modules. A PK-Sim module is converted into an extension module when edited by the user.
-  - _Extension module_: (xModule) Editable modules that contain any changes to the model structure made by the user.
+  - _Extension module_: Editable modules that contain any changes to the model structure made by the user.
 
 - **PK-Sim snapshot**: part of the PK-Sim module allowing the re-creation of the PK-Sim module.
 - **Model**: A combination of modules.
@@ -27,7 +27,7 @@ A MoBi-project contains a set of:
 - Extension modules
 - Individual BBs
 - Expression Profile BBs
-- Models resp. Simulations, which are combinations of (0-n) PK-Sim modules, (0-n) extension modules, (0-1) individual BB, and (0-n) expression profiles.
+- Models resp. Simulations, which are combinations of (0-n) PK-Sim modules, (0-n) extension modules, (0-1) individual BB, and (0-n) expression profiles. At least one module (PK-Sim or extension) must be selected to create a simulation.
 
 ## Modules
 Every module consists of **building blocks (BB)**, with BB types [*Spatial Structures (SS)*](BuildingBlocks/SpatialStructures-BB.md) (0-1), *Molecules* (0-1), *Reactions* (0-1), [*Passive Transports (PT)*](BuildingBlocks/PassiveTransports-BB.md) (0-1), *Observers* (0-1), *Events* (0-1), [*Parameter Values (PV)*](BuildingBlocks/ParameterValues-BB.md) (1-n), and [*Initial conditions (IC)*](BuildingBlocks/InitialConditions-BB.md) (1-n). Every module includes no or exactly one BB of each type, except for PV and IC BBs, of which multiple can be present in one module.
@@ -43,18 +43,20 @@ Compared to the previous versions, v12 introduces some changes in how and where 
 
 - Parameters that are present in **all species** but have different species-specific values are located in the SS BB, but their value is set to `NaN`. Example: `Organism|Acidic phospholipids (blood cells) [mg/g] - RR`, which has a value of 0.57 for humans and 0.5 for rats. The actual value is stored in the *Individual* BB. When creating a simulation and selecting a PK-Sim module, the user must select an individual. The value from the individual BB will then be applied to the parameter and replace the `NaN` stored in the SS BB.
 
-- **Distributed physiological parameters**. Parameters that are present only for certain species (e.g., `Organism|Lumen|Duodenum|Thickness_p1` is only present in the human species, but not in rat, `Organism|Lumen|Duodenum|Default thickness of gut wall` is present in the rat but not in human), **or** have a distribution in a species population (e.g., `Orgnanism|Fat|Volume`) are **not** located in the spatial structures BB, but only in the individual. Such parameters are added to the simulation structure during the simulation creation step. *Note:* Only parameters defined in the Individual BB are added to the model structure, but not the parameters defined in the PV BB.
+- Parameters that are present only for certain species (e.g., `Organism|Lumen|Duodenum|Thickness_p1` is only present in the human species, but not in rat, `Organism|Lumen|Duodenum|Default thickness of gut wall` is present in the rat but not in human), **or** have a distribution in a species population (e.g., `Orgnanism|Fat|Volume`) are **not** located in the spatial structures BB, but only in the individual. Such parameters are added to the simulation structure during the simulation creation step. *Note:* Only parameters defined in the Individual BB are added to the model structure, but not the parameters defined in the PV BB.
+
+2OD: https://github.com/Open-Systems-Pharmacology/MoBi/issues/1401
 
 ### Extension modules
 Each MoBi project may contain any number of **Extension modules**. An extension module can add or modify any part of the default PK-Sim structure - spatial structures, molecules, reactions, etc.
 
-When adding new compartments (e.g., adding a new organ) or molecules in an extension module, it is important to keep in mind that molecules will only be created in compartments if entries for the molecule-container combination is present in *any* IC BB. Therefore, when adding a molecule or a container in an xModule, the IC BB should be extended accordingly.
+When adding new compartments (e.g., adding a new organ) or molecules in an extension module, it is important to keep in mind that molecules will only be created in compartments if entries for the molecule-container combination is present in *any* IC BB. Therefore, when adding a molecule or a container in an extension module, the IC BB should be extended accordingly.
 
 *Creation* of new modules can be performed from scratch ("Create new module" creates a module with empty BBs) or by cloning whole modules ("Clone module"). Modules can be saved as pkml, and BBs in a module can be loaded from pkml.
 
 ## Model configuration
 
-Specific combination of modules is called **model configuration**. Upon building the model configuration, the extension modules will *extend* or *overwrite* the selected PK-Sim modules. The user can select multiple PK-Sim modules, or PK-Sim modules in combination with extension modules, or only the extension module(s).  The selection of modules results in a *hierarchy* of the modules, where the order of module selection determines the order of overwrite/extend actions. E.g., multiple PK-Sim modules are always extended to a common PK-Sim module, elected extension module 1 extends/overwrites the common PK-Sim module, selected extension module 2 overwrites/extends the combination of the common PK-Sim module and module 1, and so on.
+Specific combination of modules is called **model configuration**. Upon building the model configuration, the extension modules will *extend* or *overwrite* the selected PK-Sim modules. The user can select multiple PK-Sim modules, or PK-Sim modules in combination with extension modules, or only the extension module(s).  The selection of modules results in a *hierarchy* of the modules, where the order of module selection determines the order of overwrite/extend actions. E.g., multiple PK-Sim modules are always extended to a common PK-Sim module, selected extension module 1 extends/overwrites the common PK-Sim module, selected extension module 2 overwrites/extends the combination of the common PK-Sim module and module 1, and so on.
 
 If a model configuration contains a PK-Sim module, the user must select an Individual and Expression Profiles (optionally). In the hierarchy of the selected modules, the Individuals-BB always comes before the extension modules (i.e., the parameters are applied to the standard PK-Sim module). **PLEASE ADD MORE CONCRETE INFORMATION ON WHEN THE INDIVIDUAL BB IS APPLIED**
 
@@ -69,10 +71,10 @@ During simulation creation, the modules are combined to a common model structure
 For combining the spatial structures BB, two modes exist. A module can *extend* or *overwrite* the structure created in the previous steps.
 
 ### Merge behavior "Overwrite"
-When combining modules "A" and "B" (with the hierarchy "A" -> "B"), all containers from module "B" will overwrite the containers with the same path in module "A". I.e., if module "A" has a container "Organism|Container 1" with two sub-containers "Container 2" and "Container 3" (absolute paths: "Organism|Container 1|Container 2" and "Organism|Container 1|Container 2"), and module "B" has a container "Organism|Container 1" without any sub-containers, the final model will contain "Organism|Container 1" without the sub-containers "Container 2" and "Container 3". "Organism|Container 1" will only have parameters that are defined in module "B", but not in module "A".
+When combining modules "A" and "B" (with the hierarchy "A" <- "B"), all containers from module "B" will overwrite the containers with the same path in module "A". I.e., if module "A" has a container "Organism|Container 1" with two sub-containers "Container 2" and "Container 3" (absolute paths: "Organism|Container 1|Container 2" and "Organism|Container 1|Container 2"), and module "B" has a container "Organism|Container 1" without any sub-containers, the final model will contain "Organism|Container 1" without the sub-containers "Container 2" and "Container 3". "Organism|Container 1" will only have parameters that are defined in module "B", but not in module "A".
 
 ### Merge behavior "Extend"
-When combining modules "A" and "B" (with the hierarchy "A" -> "B"), all containers and parameters from module "B" will be added to module "A". I.e., if module "A" has a container "Organism|Container 1" with two sub-containers "Container 2" and "Container 3" (absolute paths: "Organism|Container 1|Container 2" and "Organism|Container 1|Container 3"), and module "B" has a container "Organism|Container 1" without any sub-containers, the final model will contain "Organism|Container 1" with parameters defined in both modules, and with the sub-containers "Organism|Container 1|Container 2" and "Organism|Container 1|Container 3".
+When combining modules "A" and "B" (with the hierarchy "A" <- "B"), all containers and parameters from module "B" will be added to module "A". I.e., if module "A" has a container "Organism|Container 1" with two sub-containers "Container 2" and "Container 3" (absolute paths: "Organism|Container 1|Container 2" and "Organism|Container 1|Container 3"), and module "B" has a container "Organism|Container 1" without any sub-containers, the final model will contain "Organism|Container 1" with parameters defined in both modules, and with the sub-containers "Organism|Container 1|Container 2" and "Organism|Container 1|Container 3".
 
 - Parameters will be overwritten. If both modules have a parameter "Organism|Container A|Param", the parameter from module "B" will be used
 - Tags will be extended. If "Organism|Container A" has a tag "Tag A" in module "A" and a tag "Tag B" in module "B", in the final model, "Organism|Container A" will have tags "Tag A" and "Tag B".

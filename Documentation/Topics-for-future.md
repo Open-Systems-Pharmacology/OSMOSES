@@ -17,7 +17,7 @@ If commiting changes in structure (i.e., the structure was changed in the origin
 A model exported from PK-Sim can result in multiple PK-Sim modules in MoBi - a module with the basic PBPK model and extensions like the pregnancy module.
 As one PK-Sim model can result in multiple PK-Sim modules in MoBi, the same snapshot can be assigned to multiple modules.
 
-Every PK-Sim module will contain the *snapshot* of the PK-Sim model that will allow recreating of the model in PK-Sim. It is possible to save the snapshot associated with a PK-Sim module (e.g. right-click "Save PK-Sim snapshot") so the model can be recreated in PK-Sim. Converting a PK-Sim module to an xModule deletes the snapshot.
+Every PK-Sim module will contain the *snapshot* of the PK-Sim model that will allow recreating of the model in PK-Sim. It is possible to save the snapshot associated with a PK-Sim module (e.g. right-click "Save PK-Sim snapshot") so the model can be recreated in PK-Sim. Converting a PK-Sim module to an extension module deletes the snapshot.
 
 When converting a PK-Sim module into an extension module (i.e., making the PK-Sim module editable), the user has to select an Individual based on which the missing values will be filled out.
 
@@ -39,7 +39,7 @@ Alternatively to the multiple selection of a submodule: multiple REPLACEMENT of 
 *Batch actions* such as "run all", "update all" will be available as an option in the context menu of model configuration.
 
 ## Read-only PK-Sim modules
-PK-Sim module cannot be edited. Editing will convert the module to an xModule, accompanied by a user warning.
+PK-Sim module cannot be edited. Editing will convert the module to an extension module, accompanied by a user warning.
 
 ## Commit changes
 STILL UNDER DISCUSSION

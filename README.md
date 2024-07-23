@@ -1,3 +1,5 @@
+[Getting started with OSMOSES](https://github.com/Open-Systems-Pharmacology/OSMOSES/blob/develop/Documentation/Getting%20Started.md)
+
 # OSMOSES
 The *Open-Source MOdeling framework for automated quality control and management of complex life Science systEms modelS* (OSMOSES) is a project funded by the German Federal Ministry of Education and Research ([project site](https://www.gesundheitsforschung-bmbf.de/de/osmoses-open-source-modellierungs-und-simulationsplattform-mit-automatisierter-9163.php)).
 

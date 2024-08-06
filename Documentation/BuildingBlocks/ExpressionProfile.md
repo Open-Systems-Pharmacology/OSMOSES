@@ -7,4 +7,4 @@
 
 - New expression profiles can be created in MoBi with the access to the gene expression DB.
 
-- An expression profile can be saved as pkml and loaded as a PV BB in an extension module.
+- An expression profile can be saved as pkml and loaded as a PV BB in an Extension module.

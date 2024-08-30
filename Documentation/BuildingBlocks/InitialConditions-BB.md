@@ -14,3 +14,5 @@ Each module can contain none or multiple IC BBs. During simulation creation, onl
 
 ### Export from PK-Sim
 - Does not include entries for proteins as there will be part of the "Experssion"-BBs.
+
+- IC BB can be exported to Excel. Only values that are defined by a constant value are exported.

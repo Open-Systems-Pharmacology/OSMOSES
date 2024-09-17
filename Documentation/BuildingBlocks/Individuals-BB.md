@@ -3,4 +3,4 @@
 - Values can be edited by user, but no new entries can be added or existing entries removed
 - New individuals can be created in MoBi.
 
-2DO https://github.com/Open-Systems-Pharmacology/OSMOSES/issues/60
+- An individual can be saved as *.pkml and loaded as a PV BB in an extension module. (https://github.com/Open-Systems-Pharmacology/MoBi/issues/1409)

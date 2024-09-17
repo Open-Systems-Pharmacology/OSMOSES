@@ -7,7 +7,7 @@ MoBi could provide infrastructure for performing population simulations similar 
 Example: Right-mouse click on a BB in any module -> Save all parameters to pkml, and the pkml can be loaded as the PV-BB in any module.
 
 ### Generic definition of the parent container of modules
-Currently, a container provided within an extension module has to specify the full path to the parent container it will be attached to.
+Currently, a container provided within an Extension module has to specify the full path to the parent container it will be attached to.
 It could be a container criteria potentially allowing to attach the substructure at more than one place in the parent-SS. Neighborhoods could be defined by container criteria as well. E.g "PARENT_CONTAINER/Plasma"
 
 ### Commit structural changes from models to modules
@@ -17,9 +17,9 @@ If commiting changes in structure (i.e., the structure was changed in the origin
 A model exported from PK-Sim can result in multiple PK-Sim modules in MoBi - a module with the basic PBPK model and extensions like the pregnancy module.
 As one PK-Sim model can result in multiple PK-Sim modules in MoBi, the same snapshot can be assigned to multiple modules.
 
-Every PK-Sim module will contain the *snapshot* of the PK-Sim model that will allow recreating of the model in PK-Sim. It is possible to save the snapshot associated with a PK-Sim module (e.g. right-click "Save PK-Sim snapshot") so the model can be recreated in PK-Sim. Converting a PK-Sim module to an extension module deletes the snapshot.
+Every PK-Sim module will contain the *snapshot* of the PK-Sim model that will allow recreating of the model in PK-Sim. It is possible to save the snapshot associated with a PK-Sim module (e.g. right-click "Save PK-Sim snapshot") so the model can be recreated in PK-Sim. Converting a PK-Sim module to an Extension module deletes the snapshot.
 
-When converting a PK-Sim module into an extension module (i.e., making the PK-Sim module editable), the user has to select an Individual based on which the missing values will be filled out.
+When converting a PK-Sim module into an Extension module (i.e., making the PK-Sim module editable), the user has to select an Individual based on which the missing values will be filled out.
 
 When viewing a SS BB of a PK-Sim module, one of the existing Individuals can be selected fron the drop-down list.
 
@@ -39,7 +39,7 @@ Alternatively to the multiple selection of a submodule: multiple REPLACEMENT of 
 *Batch actions* such as "run all", "update all" will be available as an option in the context menu of model configuration.
 
 ## Read-only PK-Sim modules
-PK-Sim module cannot be edited. Editing will convert the module to an extension module, accompanied by a user warning.
+PK-Sim module cannot be edited. Editing will convert the module to an Extension module, accompanied by a user warning.
 
 ## Commit changes
 STILL UNDER DISCUSSION

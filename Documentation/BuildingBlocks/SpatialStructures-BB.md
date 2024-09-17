@@ -14,7 +14,7 @@ A new UI allows creation of neighborhoods without drag-and-drop. The user select
 
 Exporting a container to PKML also exports all of its sub-containers and all neighborhoods that have this container or its sub-containers as a neighbor.
 
-If an extension module defines a neighborhood with a neighbor that is not present in the model configuration, the model configuration is created and warnings are displayed ("WARNING: The neighborhood "Tumor_pls_Head_pls" was not created, as the neighbor "Organism|Head|Plasma" is not present!"). **2DO** check actual implementation.
+If an Extension module defines a neighborhood with a neighbor that is not present in the model configuration, the model configuration is created and warnings are displayed ("WARNING: The neighborhood "Tumor_pls_Head_pls" was not created, as the neighbor "Organism|Head|Plasma" is not present!"). **2DO** check actual implementation.
 
 ### Parameters
 

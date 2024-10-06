@@ -29,3 +29,16 @@ Additionally, selection of the outputs can be set as defaults or loaded from def
 ![Setting output selections to project defaults](Figures/simulation-outputs-from-defaults.png)
 
 If the user loads a simulation from *.pkml into an empty MoBi project, the user is asked if the settings stored in the *.pkml should be set as project defaults.
+
+## Parameter Values BB
+
+- New parameter values can be added by selecting entries from the parameters tree view, or by manually typing in the full path to the parameter in the "Parameters to Add" frame. Multiple entries can be added, whereby each parameter must be entered in a new line.
+
+![alt text](Figures/AddParameterValuesPVBB.png)
+
+- It is possible to import values to an PV BB from another PV BB, individual, or expression profile exported as pkml.
+
+
+## Initial Conditions
+
+- It is possible to import values to an IC BB from another IC BB exported as pkml.

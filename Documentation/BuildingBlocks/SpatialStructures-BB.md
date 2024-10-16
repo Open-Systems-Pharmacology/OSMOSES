@@ -5,7 +5,7 @@ The spatial structures (SS) of the models are organized in a hierarchy of contai
 
 In a module, the user can change the parent container property for the top level containers. When combining modules, the containers (and all their children) of the module will be placed under the container specified in the `Parent path` property. If the parent path of `Container A` is empty OR the container with the specified parent path is not found in the simulation, `Container A` will be created as the top-level container in the simulation.
 
-Be cautious, as changing the parent path of a container will result in different absolute path to the repsective container and might break equations that use absolute paths for variables definition. You might have to adjust the absolute paths accordingly, by manually appending the parent path to the alisases.
+Be cautious, as changing the parent path of a container will result in different absolute path to the respective container and might break the formulas that use absolute paths for variables definition. You might have to adjust the absolute paths accordingly, by manually appending the parent path to the aliases.
 
 ### Neighborhoods
 To allow replacement or addition of structures to the spatial structure (e.g., adding tumor, or replacing the kidney) within modules, the module has to come with the information about how the organ (or just some containers) are connected to the whole organism.
@@ -14,13 +14,9 @@ A new UI allows creation of neighborhoods without drag-and-drop. The user select
 
 Exporting a container to PKML also exports all of its sub-containers and all neighborhoods that have this container or its sub-containers as a neighbor.
 
-If an Extension module defines a neighborhood with a neighbor that is not present in the model configuration, the model configuration is created and warnings are displayed ("WARNING: The neighborhood "Tumor_pls_Head_pls" was not created, as the neighbor "Organism|Head|Plasma" is not present!"). **2DO** check actual implementation.
+If an Extension module defines a neighborhood with a neighbor that is not present in the final model structure, the neighborhood is simply ignored
 
-### Parameters
-
- Parameters that are defined in the Individuals-BB are populated with "NaN"-values in the SS-BB of PK-Sim modules. **2DO** https://github.com/Open-Systems-Pharmacology/MoBi/issues/1401
-
- ### Export of containers to pkml
+### Export of containers to pkml
 
  As described in ["Modularization concept"](../Modularization-concept.md), individual-specific parameters in PK-Sim modules are not stored directly in the spatial structure but in the Individual BB. When saving a container from a PK-Sim module to pkml, the user must select an Individual and, if applicable, the proteins for which the expression in this container should be allocated.
 

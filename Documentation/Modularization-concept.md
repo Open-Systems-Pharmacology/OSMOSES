@@ -2,7 +2,7 @@
 
 The following document specifies the new concept of organizing modeling projects in modules to achieve better flexibility and re-usability in MoBi.
 
-The new concept introduces changes on how model structures are organized and combined into simulations. While the current implementation of the software (OSPS V11.3) has two major layers of organization of a MoBi project – **Building Blocks** (BB) that are combined into **Simulations**, the new modularization concept extends the structure to **Modules**, **Building Blocks**, and **Simulations**.
+The new concept introduces changes on how model structures are organized and combined into simulations. While OSPS <=V11.3 had two major layers of organization of a MoBi project – **Building Blocks** (BB) that are combined into **Simulations**, the new modularization concept extends the structure to **Modules**, **Building Blocks**, and **Simulations**.
 
 ## Definitions:
 - **Entity**: Everything within the model structure - molecule, container, parameter, parameter value, etc.
@@ -18,8 +18,8 @@ The new concept introduces changes on how model structures are organized and com
 - **MoBi-project**: A MoBi-file (e.g. *.mbp3) containing modules, models, observed data, etc.
 - [*Initial Conditions (IC) BB*](BuildingBlocks/InitialConditions-BB.md): A list of entries defining the start values of molecules in different compartments. Formerly known as Molecule Start Values.
 - [*Parameter Values (PV) BB*](BuildingBlocks/ParameterValues-BB.md): A list of entries defining the values of the parameters (or the start values of state variable parameters). Formerly known as Parameter Start Values.
-- **Individual**: Parameter set describing the physiological properties of an individual. The parameter set referred to is limited to the parameters provided by PK-Sim. Technically comparable to the Parameter Values BB with additional metadata. See [*Individuals*](BuildingBlocks/Individuals-BB.md) for details.
-- **Expression profile**: Parameter set describing the expression of a protein. See [*Expression Profile*](BuildingBlocks/ExpressionProfile.md) for details.
+- [*Individual*](BuildingBlocks/Individuals-BB.md): Parameter set describing the physiological properties of an individual. The parameter set referred to is limited to the parameters provided by PK-Sim. Technically comparable to the Parameter Values BB with additional metadata.
+- [*Expression profile*](BuildingBlocks/ExpressionProfile.md): Parameter set describing the expression of a protein.
 
 ## Project structure
 A MoBi project contains a set of:
@@ -37,11 +37,11 @@ A project in MoBi can be based on a PBPK model exported from PK-Sim. Such a mode
 
 Export of a PK-Sim model to MoBi creates one PK-Sim module, one individual, and (0-n) expression profile BBs.
 
-Compared to the previous versions, v12 introduces some changes in how and where individual parameters are stored when a PBPK model is imported in MoBi. The Spatial Structure only contains parameters that are present in all species and have the same value or the same formula across all species and individuals. Furthermore, the PV BB only holds values for parameters that are different from those stored in other BBs. In most cases, the PV BB will be empty when a PK-Sim model is imported into MoBi. An exception is when the user has modified parameter values in the PK-Sim simulation that are not part of any PK-Sim BB (e.g., intestinal permeability of Midazolam in the [Midazolam PBPK model](https://github.com/Open-Systems-Pharmacology/OSP-PBPK-Model-Library/tree/master/Midazolam).) These "Simulation parameters" are stored in the PV BB.
+Compared to the previous versions, v12 introduces some changes in how and where individual parameters are stored when a PBPK model is imported in MoBi. The Spatial Structure only contains parameters that are present in all species and have the same value or the same formula across all species and individuals. All the other parameters are defined in the **Individual** BB. Furthermore, the PV BB only holds values for parameters that are different from those stored in other BBs. In most cases, the PV BB will be empty when a PK-Sim model is imported into MoBi. An exception is when the user has modified parameter values in the PK-Sim simulation that are not part of any PK-Sim BB (e.g., intestinal permeability of Midazolam in the [Midazolam PBPK model](https://github.com/Open-Systems-Pharmacology/OSP-PBPK-Model-Library/tree/master/Midazolam).) These "Simulation parameters" are stored in the PV BB.
 
 - All parameters of the spatial structure that are **present in all species** and have the **same value or the same formula in all species and individuals** are stored directly in the spatial structures BB with the fixed value or an explicit formula. Example: `Organism|Thickness (endothelium)` (constant value) or `Organism|Weight of blood organs` (sum formula).
 
-- Parameters that are present only for certain species (e.g., `Organism|Lumen|Duodenum|Thickness_p1` is only present in the human species, but not in rat, `Organism|Lumen|Duodenum|Default thickness of gut wall` is present in the rat but not in human), **or** have different species-specific (`Organism|Acidic phospholipids (blood cells) [mg/g] - RR`) values **or** vary within a population (e.g., `Orgnanism|Fat|Volume`) are **not** located in the spatial structures BB, but only in the individual. Such parameters are added to the simulation structure during the simulation creation step.
+- Parameters that are present only for certain species (e.g., `Organism|Lumen|Duodenum|Thickness_p1` is only present in the human species, but not in rat, `Organism|Lumen|Duodenum|Default thickness of gut wall` is present in the rat but not in human), **or** have different species-specific values (`Organism|Acidic phospholipids (blood cells) [mg/g] - RR`) **or** vary within a population (e.g., `Orgnanism|Fat|Volume`) are **not** located in the spatial structures BB, but only in the individual. Such parameters are added to the simulation structure during the simulation creation step.
 
 ### Extension modules
 Each MoBi project may contain any number of **Extension modules**. An Extension module can add or modify any part of the default PK-Sim structure - spatial structures, molecules, reactions, etc.
@@ -55,8 +55,6 @@ When adding new compartments (e.g., adding a new organ) or molecules in an Exten
 Multiple modules can be combined to create a simulation. For simplicity, a specific combination of modules is called **model configuration**. When creating a simulation from modules, the Extension modules will *extend* or *overwrite* the selected PK-Sim modules. The user can select multiple PK-Sim modules, or PK-Sim modules in combination with Extension modules, or only the Extension module(s). The selection of the modules results in a *hierarchy* of the modules, where the order of module selection determines the order of overwrite/extend actions. I.e., multiple PK-Sim modules are always extended to a common PK-Sim module, the selected Extension module 1 extends/overwrites the common PK-Sim module, the selected Extension module 2 overwrites/extends the combination of the common PK-Sim module and the Extension module 1, and so on.
 
 If a model configuration contains a PK-Sim module, the user must select an Individual BB and might include Expression Profile BBs. For each module that contains at least one IC or PV BB, the user can select one (or none) IC and/or PV BB.
-
-In the hierarchy of the selected modules, the Individual BB always comes before the Extension modules (i.e., the parameters are applied to the standard PK-Sim module). **PLEASE ADD MORE CONCRETE INFORMATION ON WHEN THE INDIVIDUAL BB IS APPLIED**
 
 ## Combination rules
 
@@ -96,21 +94,24 @@ Observers are always overwritten by name. The "In container with" and "Include/E
 
 Events are always overwritten by name. 2DO https://github.com/Open-Systems-Pharmacology/OSMOSES/issues/62
 
+Will be changed https://github.com/Open-Systems-Pharmacology/OSPSuite.Core/issues/2328
+
 ### Parameter values
 
 The final values of the parameters are determined in the following order:
 
 1. **Values defined in the Building block.**  First, the value that is defined in the BB where the parameter is defined. E.g., `CYP3A4|Reference concentration` is set to 1 µmol/l in the Molecules BB. If a simulation is created only with the module with this Molecules BB without selection of an Expression Profile or a PV BB, the value will be 1 µmol/l.
-2. **Values defined in an Expression Profile.** If an expression profile is selected, the values from the expression profile are applied. E.g., `CYP3A4|Reference concentration` is set to 4.32 µmol/l in the Molecules BB. If a simulation is created with the module with the Molecules BB and the Expression Profile, the value will be 4.32 µmol/l.
-3. **Values defined in the PV BBs.** If a module is selected that contains a PV BB, the values from the PV BB are applied. If multiple modules have PV BBs with entries for the same parameters, the value from the latest module is selected. E.g., if the Extension module has an entry for `CYP3A4|Reference concentration` with the value of 2 µmol/l, and a simulation is created with the module with the Molecules BB where the value is 1 µmol/l, the Expression Profile where the value is 4.32 µmol/l, and the PV BB where the value is 2 µmol/l, the value in the simulation will be 2 µmol/l.
+2. **Values defined in the Individual**. If an individual is selected, the values from the Individual are applied. When applying an Individual to a PK-Sim module only, the parameters defined in the individual are not present in the Spatial Structure of the PK-Sim module (see #pk-sim-modules). These parameters are added to the structure upon simulation creation.
+A special case is when an extension module explicitly defines a parameter in the spatial structure that is also present in the Individual. In this case, the value from the Individual will override the value (or formula) defined in the extension module. To overwrite the parameters that are defined in the Individual (e.g., defining the `Volume` of an organ as an age-dependent table instead of a constant value), define this parameter in the Parameter Values BB of an extension module.
 
-FOR PARAMETERS DEFINED IN THE INDIVIDUAL - 2DO https://github.com/Open-Systems-Pharmacology/OSMOSES/issues/60
+3. **Values defined in an Expression Profile.** If an expression profile is selected, the values from the expression profile are applied. E.g., `CYP3A4|Reference concentration` is set to 4.32 µmol/l in the Molecules BB. If a simulation is created with the module with the Molecules BB and the Expression Profile, the value will be 4.32 µmol/l.
+4. **Values defined in the PV BBs.** If a module is selected that contains a PV BB, the values from the PV BB are applied. If multiple modules have PV BBs with entries for the same parameters, the value from the latest module is selected. E.g., if the Extension module has an entry for `CYP3A4|Reference concentration` with the value of 2 µmol/l, and a simulation is created with the module with the Molecules BB where the value is 1 µmol/l, the Expression Profile where the value is 4.32 µmol/l, and the PV BB where the value is 2 µmol/l, the value in the simulation will be 2 µmol/l.
 
 ### Initial conditions
 
 The final start values for molecules are determined in the following order:
 
-1. **Values defined in the Expression Profiles.** For proteins, values (including the formulas for start values) that are defined in the Expression Profile of the protein.
-2. **Values defined in the IC BBvs.** If multiple modules have IC BBs with entries for the same molecules, the value from the latest module is selected. If an IC BB have entries for the same molecule/container combination as an Expression Profile, the values from the IC BB will be applied.
 
-2DO - not working!! - https://github.com/Open-Systems-Pharmacology/MoBi/issues/1463
+1. **Values defined in the Molecules BB**. Start values as defined in the Molecules BB.
+2. **Values defined in the Expression Profiles.** For proteins, values (including the formulas for start values) that are defined in the Expression Profile of the protein.
+3. **Values defined in the IC BBvs.** If multiple modules have IC BBs with entries for the same molecules, the value from the latest module is selected. If an IC BB have entries for the same molecule/container combination as an Expression Profile, the values from the IC BB will be applied.

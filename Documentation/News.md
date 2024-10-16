@@ -4,7 +4,7 @@ Further changes included in V12.
 
 It is possible to copy a path to a container from the simulations view:
 
-![alt text](copy-path-from-simulation.png)
+![alt text](Figures/copy-path-from-simulation.png)
 
 ## Export of container to .pkml
 

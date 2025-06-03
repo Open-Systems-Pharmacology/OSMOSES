@@ -8,9 +8,9 @@ The OSP software is best suited for the development of complex systems models ba
 - Avoid duplication of information across modules - only implement the differences to other modules!
 
 
-## Where to get PK-Sim and MoBi version 12
+## Modularization support in OSPS
 
-OSMOSES (version 12 of the OSPS) is currently under development and has not entered the beta testing phase yet. However, a curious user can download the portable versions of PK-Sim (https://ci.appveyor.com/project/open-systems-pharmacology-ci/pk-sim/branch/develop/artifacts) and MoBi (https://ci.appveyor.com/project/open-systems-pharmacology-ci/mobi/branch/develop/artifacts) to test the new concept. Any feedback will be greatly appreciated. Contributions to this documentation are equally important as reporting bugs (for MoBi: https://github.com/Open-Systems-Pharmacology/MoBi/issues; for PK-Sim: https://github.com/Open-Systems-Pharmacology/PK-Sim/issues) or creating documentation requests/questions (https://github.com/Open-Systems-Pharmacology/OSMOSES/issues).
+The OSMOSES modularization concept has been introduced with the release of OSPS version 12.0. You can get the latest release from (here)[https://github.com/Open-Systems-Pharmacology/Suite/releases].  Any feedback on the usability of the new workflow process will be greatly appreciated. Contributions to this documentation are equally important as reporting bugs (for MoBi: https://github.com/Open-Systems-Pharmacology/MoBi/issues; for PK-Sim: https://github.com/Open-Systems-Pharmacology/PK-Sim/issues) or creating documentation requests/questions (https://github.com/Open-Systems-Pharmacology/OSMOSES/issues).
 
 ## How does OSMOSES work?
 

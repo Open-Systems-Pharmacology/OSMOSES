@@ -6,16 +6,6 @@ It is possible to copy a path to a container from the simulations view:
 
 ![alt text](Figures/copy-path-from-simulation.png)
 
-## Export of container to .pkml
-
-When exporting a container from a Spatial Structure to a .pkml, the user is asked to select an Individual and, optionally, Expression Profiles. In this case, species-specific parameters that are only present in the individual and not the default Spatial Structure of a PK-Sim module will be added to the exported container. This ensures that the exported container can be used without an individual.
-
-When loading a container from *.pkml, the exported Expression Profiles are added as PV and IC.
-
-## Commit to Building Blocks
-
-Commiting differences between a simulation and the original BBs works for parameter values only, i.g., structural changes will not be commited. Changed parameter values will be commited to the PV BB of the last module in the simulation.
-
 ## Simulation settings
 
 The "Simulations settings" building block has been removed in favor of the project-wide simulation settings. The project-wide simulation settings include the default output intervals, solver settings, and output selections. When creating a new simulationm default settings will be applied from the the project-wide settings.

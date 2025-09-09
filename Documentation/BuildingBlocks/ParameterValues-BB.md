@@ -15,3 +15,4 @@ For selected molecule(s), adds entries for parameters that are defined as _local
 ### Adding expression profiles to a PV BB
 - Values from an expression profile can be loaded to a PV BB by exporting an expression profile to PKML and loading into the PV BB.
 - Alternatively, use the "Add Protein Expression" button located in the "Edit" tab.
+- Do not forget to add the entries to the IC BB!
